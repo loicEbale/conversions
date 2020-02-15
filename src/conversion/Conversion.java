@@ -21,13 +21,19 @@ public class Conversion {
 		
 		try {
 			List<String> lines = Files.readAllLines(file);
-			for (String line : lines) {
-				setOfData = line.split("\\|\\|");
-				person = new Person(setOfData[0], setOfData[1], setOfData[2], setOfData[3]);
-				persons.add(new JSONObject(person));
+			for (int i = 0; i<lines.size(); i++) {
+				setOfData = lines.get(i).split("\\|\\|");
+				if(!lines.get(i).isEmpty()) {
+					person = new Person(setOfData[0], setOfData[1], setOfData[2], setOfData[3]);
+					persons.add(new JSONObject(person));
+				} else if(lines.get(i).isEmpty() && !lines.get(i + 1).isEmpty()) {
+					setOfData = lines.get(i + 1).split("\\|\\|");
+					person = new Person(setOfData[0], setOfData[1], setOfData[2], setOfData[3]);
+					persons.add(new JSONObject(person));	
+				}
 			}
 		} catch (NoSuchFileException e) {
-			System.err.printf("Le fichier %s n'existe pas", file.getFileName());
+			System.err.printf("Fichier introuvable -- Chemin spécifié incorrect");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
