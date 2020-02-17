@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.json.JSONObject;
+import org.json.XML;
 
 import convert.classes.Person;
 
@@ -41,5 +42,22 @@ public class Conversion {
 		return persons;
 	}
 	
-	public static void XmlToJSON() {}
+	public static JSONObject XmlToJSON(String filePath) {
+		Path file = Paths.get(filePath);
+		JSONObject obj = null;
+		try {
+			byte[] b = Files.readAllBytes(file);
+			String xml = new String(b);
+			
+			 obj = XML.toJSONObject(xml);
+			
+		} catch (NoSuchFileException e) {
+			System.err.printf("Fichier introuvable -- Chemin spécifié incorrect");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+	
 }
